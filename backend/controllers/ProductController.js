@@ -1,7 +1,8 @@
 const ProductModel = require('../models/ProductModel');
 
 class ProductController {
-    
+
+    // GET /products
     static index(req, res) {
         ProductModel.getAllProducts((err, results) => {
             if (err) {
@@ -11,33 +12,124 @@ class ProductController {
         });
     }
 
-    static store(req, res) {
-        const { name, price } = req.body;
-
-        if (!name || !price) {
-            return res.status(400).json({ status: 400, message: 'Nama dan harga wajib diisi!' });
-        }
-
-        ProductModel.create(req.body, (err, results) => {
+    // GET /products/:id
+    static show(req, res) {
+        const id = req.params.id;
+        ProductModel.getProductById(id, (err, result) => {
             if (err) {
-                return res.status(500).json({ status: 500, message: 'Gagal simpan data', error: err.message });
+                return res.status(500).json({ status: 500, message: 'Database Error', error: err.message });
             }
-            res.status(201).json({ status: 201, message: 'Produk berhasil dibuat' });
+            if (!result) {
+                return res.status(404).json({ status: 404, message: 'Produk tidak ditemukan!' });
+            }
+            res.status(200).json({ status: 200, data: result });
         });
     }
 
+    // POST /products
+    static store(req, res) {
+        const { name, description, price, stock, category_id } = req.body;
+
+        // Tangkap filename dari Multer, null jika tidak ada file
+        const image = req.file ? req.file.filename : null;
+
+        // Validasi input wajib
+        if (!name || !price) {
+            return res.status(400).json({ status: 400, message: 'Nama dan harga wajib diisi!' });
+        }
+        if (isNaN(price) || price <= 0) {
+            return res.status(400).json({ status: 400, message: 'Harga harus berupa angka positif!' });
+        }
+
+        const data = {
+            name,
+            description : description || null,
+            price,
+            stock       : stock || 0,
+            image,                        // <-- dari req.file.filename
+            category_id : category_id || null,
+        };
+
+        ProductModel.create(data, (err, results) => {
+            if (err) {
+                return res.status(500).json({ status: 500, message: 'Gagal simpan data', error: err.message });
+            }
+            res.status(201).json({
+                status  : 201,
+                message : 'Produk berhasil dibuat',
+                data    : { id: results.insertId, name, image },
+            });
+        });
+    }
+
+    // PUT /products/:id
     static update(req, res) {
         const id = req.params.id;
-        ProductModel.update(id, req.body, (err, results) => {
+        const { name, description, price, stock, category_id } = req.body;
+
+        // Validasi input wajib
+        if (!name || !price) {
+            return res.status(400).json({ status: 400, message: 'Nama dan harga wajib diisi!' });
+        }
+        if (isNaN(price) || price <= 0) {
+            return res.status(400).json({ status: 400, message: 'Harga harus berupa angka positif!' });
+        }
+
+        // Ambil data produk lama dulu untuk menjaga image lama jika tidak upload baru
+        ProductModel.getProductById(id, (err, product) => {
             if (err) {
-                return res.status(500).json({ status: 500, message: 'Database Error' });
+                return res.status(500).json({ status: 500, message: 'Database Error', error: err.message });
             }
-            
-            if (results.affectedRows === 0) {
+            if (!product) {
                 return res.status(404).json({ status: 404, message: 'Produk tidak ditemukan!' });
             }
-            
-            res.status(200).json({ status: 200, message: 'Update sukses' });
+
+            // Jika ada file baru → pakai filename baru, jika tidak → pertahankan image lama
+            const image = req.file ? req.file.filename : product.image;
+
+            const data = {
+                name,
+                description : description || null,
+                price,
+                stock       : stock || 0,
+                image,                        // <-- baru atau lama
+                category_id : category_id || null,
+            };
+
+            ProductModel.update(id, data, (err, results) => {
+                if (err) {
+                    return res.status(500).json({ status: 500, message: 'Database Error', error: err.message });
+                }
+                if (results.affectedRows === 0) {
+                    return res.status(404).json({ status: 404, message: 'Produk tidak ditemukan!' });
+                }
+                res.status(200).json({
+                    status  : 200,
+                    message : 'Update sukses',
+                    data    : { id, name, image },
+                });
+            });
+        });
+    }
+
+    // DELETE /products/:id
+    static destroy(req, res) {
+        const id = req.params.id;
+
+        ProductModel.getProductById(id, (err, product) => {
+            if (err) {
+                return res.status(500).json({ status: 500, message: 'Database Error', error: err.message });
+            }
+            if (!product) {
+                return res.status(404).json({ status: 404, message: 'Produk tidak ditemukan!' });
+            }
+
+            ProductModel.delete(id, (err, results) => {
+                if (err) {
+                    return res.status(500).json({ status: 500, message: 'Gagal hapus data', error: err.message });
+                }
+                res.status(200).json({ status: 200, message: `Produk ID ${id} berhasil dihapus` });
+            });
         });
     }
 }
