@@ -11,7 +11,7 @@ if (!fs.existsSync(uploadDir)) {
 // 1. Konfigurasi Storage & Rename File Otomatis
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
-        cb(null, 'uploadsDir'); // File akan disimpan di folder backend/uploads/
+        cb(null, uploadDir); // File akan disimpan di folder backend/uploads/
     },
     filename: function (req, file, cb) {
         // Format: timestamp-randomangka.ekstensi (contoh: 1690123-456.jpg)
@@ -20,16 +20,18 @@ const storage = multer.diskStorage({
     }
 });
 
-// 2. Validasi Tipe File (Hanya menerima gambar)
+//2. Validasi Tipe File (Hanya menerima gambar)
 const fileFilter = (req, file, cb) => {
-    const allowedTypes = /jpeg|jpg|png|webp/;
-    const extname = allowedTypes.test(path.extname(file.originalname).toLowerCase());
-    const mimetype = allowedTypes.test(file.mimetype);
-
-    if (extname && mimetype) {
-        return cb(null, true);
+    const allowedExts = ['.jpg', '.jpeg', '.png', '.webp'];
+    const ext = path.extname(file.originalname).toLowerCase();
+    
+    // Kita buat logikanya sangat longgar dulu untuk testing
+    if (allowedExts.includes(ext) || file.mimetype.startsWith('image/')) {
+        console.log("Status: DITERIMA");
+        cb(null, true);
     } else {
-        cb(new Error('Validasi Error: Hanya file gambar (JPG, JPEG, PNG, WEBP) yang diperbolehkan!'));
+        console.log("Status: DITOLAK");
+        cb(new Error('Validasi Error: Hanya file gambar (JPG, JPEG, PNG, WEBP) yang diperbolehkan!'), false);
     }
 };
 
