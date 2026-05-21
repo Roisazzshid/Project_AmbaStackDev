@@ -123,35 +123,40 @@ body {
    HERO POP OUT (EFFECT 3D) CUSTOMIZATION
    ========================================= */
 
-/* 1. Beri jarak ekstra di atas konten utama pada desktop agar kepala tidak tertutup Navbar */
-@media (min-width: 768px) {
+/* A. Memberi jarak margin universal di atap agar pop-out tidak nabrak Navbar sticky */
+main.container-fluid {
+  margin-top: 100px !important; /* Ganti margin universal dari previous prompt */
+}
+
+/* Mobile adjustment: Memberi ruang di mobile agar kepala pop-out aman */
+@media (max-width: 767px) {
   main.container-fluid {
-    margin-top: 100px !important; 
+      margin-top: 80px !important; 
   }
 }
 
-/* 2. Styling bawaan untuk foto Ambasador (Responsive di HP) */
+/* B. KUNCI EFEK 3D NONGOL PADA DUTA MEREK */
 .ambassador-popout {
-  max-height: 320px; 
-  object-fit: contain;
-  margin-bottom: -5px; /* Sedikit ke bawah menutupi garis border */
   display: block;
   margin-left: auto;
   margin-right: auto;
-  transition: transform 0.3s ease;
+  transition: all 0.3s ease;
+  object-fit: contain;
+
+  /* Styling bawaan untuk HP (KUNCI NONGOL MOBILE) */
+  max-height: 280px; /* Tinggi di HP sedikit diperkecil agar pas */
+  margin-top: -60px; /* Nongol keluar menembus atap card di HP */
+  z-index: 10; /* Make sure image is on top */
 }
 
-/* 3. KUNCI EFEK 3D NONGOL DI DESKTOP */
+/* C. KUNCI EFEK 3D NONGOL PADA DESKTOP */
 @media (min-width: 768px) {
   .ambassador-popout {
-    /* Dibuat sangat tinggi (480px) agar melebihi tinggi container Hero (380px) */
-    max-height: 480px !important; 
-    
-    /* Margin negatif menarik gambar ke atas sehingga menembus atap container */
-    margin-top: -100px; 
-    
-    /* Sedikit diperbesar agar efek 3D-nya semakin terasa maju */
-    transform: scale(1.05); 
-    transform-origin: bottom center;
+      max-height: 480px !important; /* Tinggi desktop */
+      margin-top: -100px; /* Nongol keluar menembus atap card di desktop */
+      margin-bottom: -5px; /* Menempel di lantai bawah card */
+      transform: scale(1.05); /* Sedikit diperbesar */
+      transform-origin: bottom center;
+      z-index: 1; /* Reset z-index desktop stacking */
   }
 }
