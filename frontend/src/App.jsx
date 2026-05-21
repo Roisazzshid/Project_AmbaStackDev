@@ -53,7 +53,7 @@ function App() {
           ))}
         </div>
 
-        {/* KATALOG HEADER & TOMBOL TEST SPRINT */}
+        {/* KATALOG HEADER & TOMBOL TEST */}
         <div className="d-flex justify-content-between align-items-center mb-4">
           <h4 className="fw-bolder text-dark fs-3 mb-0" style={{ letterSpacing: '-0.5px' }}>
             Katalog Produk Pilihan

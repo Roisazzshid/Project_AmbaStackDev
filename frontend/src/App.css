@@ -118,3 +118,40 @@ body {
 .flat-search-btn:hover {
   color: #03AC0E !important; /* Ikon berubah jadi hijau saat di-hover */
 }
+
+/* =========================================
+   HERO POP OUT (EFFECT 3D) CUSTOMIZATION
+   ========================================= */
+
+/* 1. Beri jarak ekstra di atas konten utama pada desktop agar kepala tidak tertutup Navbar */
+@media (min-width: 768px) {
+  main.container-fluid {
+    margin-top: 100px !important; 
+  }
+}
+
+/* 2. Styling bawaan untuk foto Ambasador (Responsive di HP) */
+.ambassador-popout {
+  max-height: 320px; 
+  object-fit: contain;
+  margin-bottom: -5px; /* Sedikit ke bawah menutupi garis border */
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  transition: transform 0.3s ease;
+}
+
+/* 3. KUNCI EFEK 3D NONGOL DI DESKTOP */
+@media (min-width: 768px) {
+  .ambassador-popout {
+    /* Dibuat sangat tinggi (480px) agar melebihi tinggi container Hero (380px) */
+    max-height: 480px !important; 
+    
+    /* Margin negatif menarik gambar ke atas sehingga menembus atap container */
+    margin-top: -100px; 
+    
+    /* Sedikit diperbesar agar efek 3D-nya semakin terasa maju */
+    transform: scale(1.05); 
+    transform-origin: bottom center;
+  }
+}
