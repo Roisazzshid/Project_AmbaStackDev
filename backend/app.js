@@ -7,6 +7,7 @@ const authRoutes = require('./routes/authRoutes');
 const app = express();
 const port = 8000;
 
+app.use('/uploads', express.static('uploads'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));

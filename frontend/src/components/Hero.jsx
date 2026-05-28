@@ -25,14 +25,11 @@ function Hero() {
             />
           </div>
 
-          {/* --- CONTENT COLUMN (Sekarang Kedua di JSX untuk Mobile Stacking) --- */}
-          {/* order-2 untuk mobile (di bawah gambar), moved to order-md-1 (paling kiri) di desktop */}
-          {/* pt-0 pt-md-3 memberikan padding top ekstra di desktop agar teks sejajar tengah */}
           <div className="col-12 col-md-7 pt-0 pt-md-3 pb-5 text-white text-center text-md-start z-2 order-md-1">
             
             {/* BADGE */}
             <span className="badge bg-white text-brand mb-3 px-3 py-2 rounded-pill fw-bold shadow-sm">
-              ⚡ PASAR DIGITAL TERLENGKAP
+              E-COMMERCE TERLENGKAP
             </span>
             
             {/* JUDUL */}
