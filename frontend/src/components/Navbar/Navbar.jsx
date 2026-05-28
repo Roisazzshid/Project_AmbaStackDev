@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import './Navbar.css'; // Import CSS spesifik Navbar
-import logoImg from '../../assets/logo.png'; // Perhatikan penambahan ../ karena masuk sub-folder
+import { Link } from 'react-router-dom'; // 1. TAMBAHKAN IMPORT INI
+import './Navbar.css'; 
+import logoImg from '../../assets/logo.png'; 
 
 function Navbar({ cartCount }) {
   const [isAnimating, setIsAnimating] = useState(false);
@@ -15,10 +16,11 @@ function Navbar({ cartCount }) {
   return (
     <nav className="navbar navbar-expand-lg sticky-top py-3 glass-navbar shadow-sm mx-3 mt-3 px-3" style={{ top: '15px', zIndex: 1030 }}>
       <div className="container-fluid">
-        <a className="navbar-brand fw-bolder text-brand fs-4 d-flex align-items-center" href="#">
+        {/* BRAND LOGO: Menggunakan Link agar kalau diklik kembali ke beranda */}
+        <Link className="navbar-brand fw-bolder text-brand fs-4 d-flex align-items-center" to="/">
           <img src={logoImg} alt="AmbaCart Logo" height="38" className="me-2" />
           AmbaCart
-        </a>
+        </Link>
         
         <button className="navbar-toggler border-0 shadow-none" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
           <span className="navbar-toggler-icon"></span>
@@ -42,7 +44,8 @@ function Navbar({ cartCount }) {
 
           <ul className="navbar-nav ms-auto align-items-center gap-3">
             <li className="nav-item">
-              <a className="nav-link fw-bold text-dark" href="#">Masuk</a>
+              {/* 2. PERUBAHAN UTAMA: <a> diubah menjadi <Link> */}
+              <Link className="nav-link fw-bold text-dark" to="/login">Masuk</Link>
             </li>
             <li className="nav-item mt-2 mt-lg-0">
               <button className="btn flat-btn-brand d-flex align-items-center justify-content-center gap-2 px-4 py-2">
