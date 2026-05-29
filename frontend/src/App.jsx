@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Routes, Route } from 'react-router-dom';
 
-// Import Layouts (Pastikan Rois sudah membuat file ini di folder src/layouts/)
+// Import Layouts
 import MainLayout from './layouts/MainLayout';
 import AuthLayout from './layouts/AuthLayout';
 
@@ -13,14 +13,17 @@ import Register from './pages/Auth/Register';
 import './App.css';
 
 function App() {
+  // MANAJEMEN STATE KERANJANG GLOBAL SPRINT 11
+  const [cartCount, setCartCount] = useState(0);
+  const handleAddToCart = () => setCartCount((prev) => prev + 1);
+
   return (
     <Routes>
-      {/* 1. Rute untuk halaman publik yang butuh Navbar & Footer */}
-      <Route element={<MainLayout />}>
+      {/* Alirkan data cartCount dan fungsi penambah ke Layout Utama */}
+      <Route element={<MainLayout cartCount={cartCount} handleAddToCart={handleAddToCart} />}>
         <Route path="/" element={<Home />} />
       </Route>
 
-      {/* 2. Rute untuk halaman Autentikasi (Polos) */}
       <Route element={<AuthLayout />}>
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />

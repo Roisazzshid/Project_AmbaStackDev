@@ -202,3 +202,21 @@ main.container-fluid {
   border: 2px dashed #cbd5e1;
   border-radius: 20px;
 }
+
+/* Efek Glow untuk Input Group Custom di halaman Auth */
+.custom-input-group {
+  transition: all 0.2s ease-in-out;
+  border: 1px solid transparent;
+}
+
+/* Saat input di dalamnya diklik, border luar ikut menyala */
+.custom-input-group:focus-within {
+  border: 1px solid var(--brand-color, #03AC0E) !important;
+  box-shadow: 0 0 0 0.25rem rgba(3, 172, 14, 0.15) !important;
+}
+
+/* Efek sentuhan untuk tombol icon mata */
+.btn-eye:hover {
+  background-color: rgba(0,0,0,0.05) !important;
+  border-radius: 8px;
+}
