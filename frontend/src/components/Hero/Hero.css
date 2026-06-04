@@ -1,7 +1,8 @@
 .ambassador-popout {
-  max-height: 280px;
+  max-height: 240px; /* Lebih kecil di HP agar teks terbaca jelas */
   object-fit: contain;
-  margin-top: -30px;
+  margin-top: -20px;
+  margin-bottom: 10px;
   transform-origin: bottom center;
 }
 
@@ -11,7 +12,6 @@
     margin-top: -100px;
     margin-bottom: -5px;
     transform: scale(1.05);
-    transform-origin: bottom center;
     z-index: 1;
   }
 }

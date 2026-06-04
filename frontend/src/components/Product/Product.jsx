@@ -1,28 +1,45 @@
 import React from 'react';
-import './Product.css'; // Import CSS spesifik Product
+import './Product.css'; 
 
 function Product({ name, price, image, location, sold, onAddToCart }) {
   return (
-    <div className="glass-card h-100 d-flex flex-column p-3 product-card-hover">
-      <div className="rounded-2 overflow-hidden mb-3 bg-white d-flex align-items-center justify-content-center" style={{ height: '180px' }}>
-        <img src={image} className="img-fluid w-100 h-100" alt={name} style={{ objectFit: 'cover' }} />
+    <div className="glass-card h-100 d-flex flex-column p-2 p-sm-3 product-card-hover bg-white bg-opacity-75">
+      {/* Gambar Etalase Produk */}
+      <div className="rounded-3 overflow-hidden mb-2 mb-md-3 bg-white d-flex align-items-center justify-content-center product-img-box">
+        <img src={image} className="img-fluid w-100 h-100 product-card-img" alt={name} />
       </div>
       
-      <div className="card-body p-0 d-flex flex-column text-start">
-        <h6 className="fw-semibold text-dark mb-1 lh-base" style={{ display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }} title={name}>
+      {/* Informasi Detil Produk */}
+      <div className="card-body p-1 p-sm-0 d-flex flex-column text-start">
+        <h6 className="fw-semibold text-dark mb-1 lh-sm product-title-text" title={name}>
           {name}
         </h6>
-        <h5 className="fw-bold text-brand mb-3 mt-1">Rp {price.toLocaleString('id-ID')}</h5>
+        
+        <h5 className="fw-bold text-brand mb-2 mt-1 product-price-text">
+          Rp {Number(price).toLocaleString('id-ID')}
+        </h5>
         
         <div className="d-flex align-items-center mb-2">
-          <span className="badge bg-success bg-opacity-25 text-success rounded-1 px-2 py-1 small fw-bold">Bebas Ongkir</span>
+          <span className="badge bg-success bg-opacity-10 text-success rounded-pill px-2 py-0.5 fw-bold label-ongkir">
+            Bebas Ongkir
+          </span>
         </div>
         
-        <p className="small mb-3 text-secondary fw-medium">
-          📍 {location} <br/> ⭐ 4.9 | Terjual {sold}+
+        {/* Ikon Vektor Solid Penunjuk Lokasi Toko */}
+        <p className="mb-2 text-secondary fw-medium d-flex align-items-center gap-1 location-text">
+          <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="currentColor" className="bi bi-geo-alt-fill text-danger flex-shrink-0" viewBox="0 0 16 16">
+            <path d="M8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10m0-7a3 3 0 1 1 0-6 3 3 0 0 1 0 6"/>
+          </svg>
+          <span className="text-truncate">{location}</span>
         </p>
-        
-        <button onClick={onAddToCart} className="btn flat-btn-brand w-100 py-2 mt-auto fw-bold">
+      </div>
+
+      {/* Akses Tombol Transaksi Langsung */}
+      <div className="mt-auto pt-1 pt-sm-2">
+        <button 
+          onClick={onAddToCart} 
+          className="btn flat-btn-brand w-100 py-1.5 py-sm-2 fw-semibold rounded-3 text-truncate btn-add-cart-text"
+        >
           + Keranjang
         </button>
       </div>
