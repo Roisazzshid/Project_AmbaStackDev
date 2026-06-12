@@ -1,12 +1,15 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react'; // ← tambah useContext
 import { Link, useNavigate } from 'react-router-dom';
 import http from '../../utils/http'; 
+import { AuthContext } from '../../context/AuthContext'; // ← tambah ini
 
 import ambaNormal from '../../assets/mascot1.png'; 
 import ambaClosed from '../../assets/mascot2.png'; 
 
 function Login() {
   const navigate = useNavigate();
+  const { login } = useContext(AuthContext); // ← tambah ini
+
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
 
@@ -26,8 +29,7 @@ function Login() {
       const res = await http.post('/auth/login', formData);
       const { token } = res.data;
 
-      // Simpan token ke localStorage
-      localStorage.setItem('token', token);
+      login(token); // ← ganti dari localStorage.setItem('token', token)
 
       alert('Login berhasil!');
       navigate('/admin');
@@ -40,9 +42,9 @@ function Login() {
   };
 
   return (
+    // ... semua UI di bawah ini TIDAK BERUBAH sama sekali
     <div className="glass-panel p-4 p-sm-5 shadow-lg position-relative mt-5" style={{ width: '100%', maxWidth: '450px', borderRadius: '20px' }}>
       
-      {/* TOMBOL KEMBALI MENUJU BERANDA */}
       <button 
         type="button" 
         onClick={() => navigate('/')} 
@@ -55,7 +57,6 @@ function Login() {
         </svg>
       </button>
 
-      {/* MASKOT */}
       <div className="text-center" style={{ marginTop: '-130px', marginBottom: '-25px', display: 'grid', placeItems: 'center', height: '185px' }}>
         <img src={ambaNormal} alt="AmbaCart Ambassador" style={{ gridArea: '1 / 1 / 2 / 2', height: '185px', objectFit: 'contain', transition: 'opacity 0.15s ease-in-out', filter: 'drop-shadow(0 10px 10px rgba(0,0,0,0.15))', opacity: showPassword ? 0 : 1, zIndex: showPassword ? 1 : 2 }} />
         <img src={ambaClosed} alt="AmbaCart Ambassador Eyes Closed" style={{ gridArea: '1 / 1 / 2 / 2', height: '185px', objectFit: 'contain', transition: 'opacity 0.15s ease-in-out', filter: 'drop-shadow(0 10px 10px rgba(0,0,0,0.15))', opacity: showPassword ? 1 : 0, zIndex: showPassword ? 2 : 1 }} />
