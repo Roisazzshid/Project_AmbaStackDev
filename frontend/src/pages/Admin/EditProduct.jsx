@@ -81,9 +81,9 @@ function EditProduct({ showToast }) {
   };
 
   const executeLogout = () => {
-    localStorage.removeItem('token');
-    if (showToast) showToast("Berhasil logout dari sesi admin.");
-    navigate('/login');
+    logout();
+    if (showToast) showToast("Berhasil Logout dari sesi admin.");
+    navigate('/login'); 
   };
 
   return (

@@ -98,10 +98,11 @@ function AdminDashboard({ showToast }) {
   };
 
   const executeLogout = () => {
-    localStorage.removeItem('token');
+    logout(); // Memanggil fungsi dari Context API
     if (showToast) showToast("Berhasil Logout dari sesi admin.");
     navigate('/login'); 
   };
+
 
   return (
     <div className="min-vh-100 d-flex flex-column" style={{ background: '#f8f9fa', paddingBottom: '3rem' }}>
