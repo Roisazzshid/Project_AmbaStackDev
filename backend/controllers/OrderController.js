@@ -37,6 +37,37 @@ class OrderController {
             });
         });
     }
+
+    // [Untuk Admin] Tarik semua pesanan
+    static getAllAdminOrders(req, res) {
+        db.query('SELECT * FROM orders ORDER BY created_at DESC', (err, results) => {
+            if (err) return res.status(500).json({ error: err.message });
+            res.json({ success: true, data: results });
+        });
+    }
+
+    // [Untuk Admin] Update Resi & Status
+    static updateOrderStatus(req, res) {
+        const { order_id } = req.params;
+        const { status, tracking_number } = req.body;
+        db.query(
+            'UPDATE orders SET status = ?, tracking_number = ? WHERE id = ?',
+            [status, tracking_number, order_id],
+            (err) => {
+                if (err) return res.status(500).json({ error: err.message });
+                res.json({ success: true, message: 'Resi berhasil diupdate!' });
+            }
+        );
+    }
+
+    // [Untuk Pembeli] Lihat riwayat resi
+    static getUserOrders(req, res) {
+        const userId = req.user.id;
+        db.query('SELECT * FROM orders WHERE user_id = ? ORDER BY created_at DESC', [userId], (err, results) => {
+            if (err) return res.status(500).json({ error: err.message });
+            res.json({ success: true, data: results });
+        });
+    }
 }
 
 module.exports = OrderController;
