@@ -5,6 +5,7 @@ const db = require('./config/db');
 const productRoutes = require('./routes/productRoutes');
 const authRoutes = require('./routes/authRoutes');
 const userRoutes = require('./routes/userRoutes');
+const orderRoutes = require('./routes/orderRoutes');
 const app = express();
 const port = 8000;
 
@@ -34,6 +35,7 @@ app.get('/debug-products', (req, res) => {
 app.use('/api/products', productRoutes); 
 app.use('/api/auth', authRoutes);
 app.use('/api/users', userRoutes)
+app.use('/api/orders', orderRoutes);
 
 app.listen(port, () => {
   console.log(`Server berjalan di http://localhost:${port}`);
