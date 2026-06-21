@@ -23,6 +23,8 @@ import Register from './pages/Auth/Register';
 import AdminDashboard from './pages/Admin/AdminDashboard';
 import AddProduct from './pages/Admin/AddProduct';
 import EditProduct from './pages/Admin/EditProduct';
+import AdminOrders from './pages/Admin/AdminOrders';
+import OrderHistory from './pages/OrderHistory';
 
 // IMPORT HALAMAN BANTUAN FOOTER
 import CaraBelanja from './pages/CaraBelanja';
@@ -40,6 +42,9 @@ function App() {
           <Route path="/cart" element={<Cart />} />
           <Route path="/profile" element={
             <ProtectedRoute><Profile /></ProtectedRoute>
+          } />
+          <Route path="/order-history" element={
+            <ProtectedRoute><OrderHistory /></ProtectedRoute>
           } />
           <Route path="/cara-belanja" element={<CaraBelanja />} />
           <Route path="/hubungi-kami" element={<ContactUs />} />
@@ -61,6 +66,9 @@ function App() {
         } />
         <Route path="/admin/edit/:id" element={
           <ProtectedRoute><EditProduct /></ProtectedRoute>
+        } />
+        <Route path="/admin/orders" element={
+          <ProtectedRoute><AdminOrders /></ProtectedRoute>
         } />
 
         {/* RUTE NOT FOUND */}
