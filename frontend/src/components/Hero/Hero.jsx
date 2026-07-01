@@ -32,7 +32,7 @@ function Hero({ searchQuery, setSearchQuery }) {
                 🚀 DISKON SPESIAL HARI INI
               </span>
             </div>
-            <h1 className="fw-black display-5 mb-3 text-white text-shadow" style={{ letterSpacing: '-0.5px', lineHeight: '1.2' }}>
+            <h1 className="fw-black display-5 mb-3 text-white text-shadow" style={{ letterSpacing: '-0.5px', lineHeight: '1.2', WebkitTextStroke: '1.5px white' }}>
               Belanja Puas,<br/>Harga Pas di AmbaCart!
             </h1>
             <p className="lead mb-4 opacity-90 fs-6 fw-medium text-white d-none d-md-block">
