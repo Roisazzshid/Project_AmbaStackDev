@@ -7,7 +7,10 @@ import { AuthContext } from '../context/AuthContext';
 
 function Home() {
   const { handleAddToCart } = useOutletContext() || {};
-  const { token } = React.useContext(AuthContext); // <-- Ambil token  const [products, setProducts] = useState([]);
+  const { token } = useContext(AuthContext); 
+  
+  // FIXED: Posisi state diperbaiki agar tidak masuk ke dalam komentar
+  const [products, setProducts] = useState([]);
   const [categories, setCategories] = useState([]); 
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -17,7 +20,7 @@ function Home() {
 
   const brandColor = '#03AC0E';
 
-  // Cek apakah Admin
+  // Cek apakah yang login adalah Admin
   let userRole = 'customer';
   if (token) {
     try {
@@ -26,6 +29,7 @@ function Home() {
     } catch (e) {}
   }
   const isAdmin = userRole === 'admin';
+
   useEffect(() => {
     async function loadData() {
       try {
@@ -75,7 +79,7 @@ function Home() {
               Pilihan barang terbaik khusus untuk Anda hari ini.
             </p>
           </div>
-          <a href="#" className="text-brand fw-bold text-decoration-none small" style={{ color: brandColor }}>Lihat Semua</a>
+          <Link to="/" className="text-brand fw-bold text-decoration-none small" style={{ color: brandColor }}>Lihat Semua</Link>
         </div>
 
         <div className="d-flex overflow-auto pb-2 mb-4 hide-scrollbar gap-2">
@@ -158,7 +162,6 @@ function Home() {
                         </div>
                       </Link>
 
-                      {/* FIXED: JIKA ADMIN, TOMBOL MATI DAN TULISAN MODE ADMIN */}
                       <div className="mt-auto pt-2">
                         <button 
                           onClick={(e) => {
@@ -169,7 +172,7 @@ function Home() {
                           className={`btn w-100 fw-bold rounded-pill py-2 shadow-sm d-flex align-items-center justify-content-center transition-all ${isAdmin ? 'bg-secondary text-white border-0' : (isOutOfStock ? 'bg-light text-secondary border-secondary' : 'btn-add-cart')}`}
                           style={{ fontSize: '0.85rem', cursor: isAdmin ? 'not-allowed' : 'pointer' }}
                         >
-                          {isAdmin ? 'Mode Admin' : (isOutOfStock ? 'Stok Kosong' : (
+                          {isAdmin ? '🛡️ Mode Admin' : (isOutOfStock ? 'Stok Kosong' : (
                             <>
                               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="me-2" viewBox="0 0 16 16"><path d="M.5 1a.5.5 0 0 0 0 1h1.11l.401 1.607 1.498 7.985A.5.5 0 0 0 4 12h1a2 2 0 1 0 0 4 2 2 0 0 0 0-4h7a2 2 0 1 0 0 4 2 2 0 0 0 0-4h1a.5.5 0 0 0 .491-.408l1.5-8A.5.5 0 0 0 14.5 3H2.89l-.405-1.621A.5.5 0 0 0 2 1H.5zM6 14a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm7 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"/></svg>
                               + Keranjang
