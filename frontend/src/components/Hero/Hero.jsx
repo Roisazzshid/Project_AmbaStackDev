@@ -18,24 +18,32 @@ function Hero({ searchQuery, setSearchQuery }) {
   }, [images.length]);
 
   return (
-    <div className="glass-panel mb-4 mt-4 position-relative shadow-sm" style={{ borderRadius: '24px', overflow: 'visible', background: 'linear-gradient(135deg, #03AC0E 0%, #06850E 100%)' }}>
-      <div className="container px-4 px-md-5">
-        
-        {/* FIXED: Diubah menjadi align-items-stretch agar Kolom Kanan mengambil tinggi full Card */}
+    <div className="glass-panel mb-4 mt-4 position-relative shadow-sm" style={{ borderRadius: '24px', overflow: 'visible', background: 'linear-gradient(135deg, #03AC0E 0%, #06850E 100%)', color: 'white' }}>
+      
+      {/* FIXED: Pembungkus KHUSUS Ornamen Tas Belanja agar terpotong rapi (Tidak bocor keluar card) */}
+      <div className="position-absolute w-100 h-100" style={{ top: 0, left: 0, overflow: 'hidden', borderRadius: '24px', zIndex: 0 }}>
+        <svg xmlns="http://www.w3.org/2000/svg" width="350" height="350" fill="white" className="position-absolute opacity-10 d-none d-md-block" style={{ right: '-5%', bottom: '-20%', pointerEvents: 'none' }} viewBox="0 0 16 16">
+          <path d="M8 1a2.5 2.5 0 0 1 2.5 2.5V4h-5v-.5A2.5 2.5 0 0 1 8 1zm3.5 3v-.5a3.5 3.5 0 1 0-7 0V4H1v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V4h-3.5zM2 5h12v9a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V5z"/>
+        </svg>
+      </div>
+
+      <div className="container px-4 px-md-5 position-relative" style={{ zIndex: 1 }}>
         <div className="row d-flex align-items-stretch justify-content-between" style={{ minHeight: '380px' }}>
           
           {/* TEKS & KOLOM PENCARIAN */}
-          {/* FIXED: Ditambahkan flex-column & justify-content-center agar teks tetap vertikal-tengah */}
-          <div className="col-12 col-md-7 d-flex flex-column justify-content-center pt-5 pt-md-0 pb-5 pb-md-0 text-white text-center text-md-start z-2 order-2 order-md-1">
+          <div className="col-12 col-md-7 d-flex flex-column justify-content-center pt-5 pt-md-0 pb-5 pb-md-0 text-center text-md-start order-2 order-md-1">
             <div className="mb-3">
-              <span className="badge px-3 py-2 rounded-pill fw-bold shadow-sm d-inline-block" style={{ color: brandColor, backgroundColor: '#ffffff' }}>
+              <span className="badge px-3 py-2 rounded-pill fw-bolder shadow-sm d-inline-block" style={{ color: brandColor, backgroundColor: '#ffffff', letterSpacing: '0.5px' }}>
                 🚀 DISKON SPESIAL HARI INI
               </span>
             </div>
-            <h1 className="fw-black display-5 mb-3 text-white text-shadow" style={{ letterSpacing: '-0.5px', lineHeight: '1.2', WebkitTextStroke: '2px white' }}>
+            
+            {/* Teks Putih & Sangat Tebal (fw-black, font-weight 900) */}
+            <h1 className="display-5 mb-3 text-white text-shadow" style={{ fontWeight: '900', letterSpacing: '-0.5px', lineHeight: '1.2' }}>
               Belanja Puas,<br/>Harga Pas di AmbaCart!
             </h1>
-            <p className="lead mb-4 opacity-90 fs-6 fw-medium text-white d-none d-md-block">
+            
+            <p className="lead mb-4 fs-6 fw-bold text-white d-none d-md-block">
               Temukan penawaran terbaik untuk berbagai macam kategori mulai dari gadget mutakhir, pakaian trendi, hingga perlengkapan rumah. Gratis Ongkir se-Indonesia!
             </p>
             
@@ -54,16 +62,16 @@ function Hero({ searchQuery, setSearchQuery }) {
             </div>
           </div>
 
-          {/* SLIDER GAMBAR */}
-          <div className="col-12 col-md-5 position-relative z-1 order-1 order-md-2" style={{ minHeight: '300px' }}>
+          {/* SLIDER GAMBAR MASKOT POP-OUT */}
+          <div className="col-12 col-md-5 position-relative order-1 order-md-2" style={{ minHeight: '300px' }}>
             {images.map((img, index) => (
               <div 
                 key={index}
                 className={`position-absolute w-100 d-flex justify-content-center ${index === currentIndex ? 'active' : ''}`}
                 style={{
-                  bottom: '0',    // <--- FIXED: Mengunci/meratakan elemen tepat di garis bawah kotak
+                  bottom: '0',    
                   left: '0',
-                  height: '115%', // <--- FIXED: Tinggi dilebihkan 15% agar kepala menembus batas atas
+                  height: '115%', 
                   opacity: index === currentIndex ? 1 : 0,
                   transition: 'opacity 0.8s ease-in-out',
                   zIndex: index === currentIndex ? 2 : 1
@@ -77,7 +85,7 @@ function Hero({ searchQuery, setSearchQuery }) {
                     width: 'auto',
                     maxWidth: '100%',
                     objectFit: 'contain', 
-                    objectPosition: 'bottom', // <--- FIXED: Memastikan kaki nempel di lantai kotak
+                    objectPosition: 'bottom', 
                     filter: 'drop-shadow(0 20px 20px rgba(0,0,0,0.4))' 
                   }} 
                 />
@@ -87,9 +95,6 @@ function Hero({ searchQuery, setSearchQuery }) {
 
         </div>
       </div>
-      
-      {/* Background SVG Ornamen */}
-      <svg xmlns="http://www.w3.org/2000/svg" width="350" height="350" fill="white" className="position-absolute opacity-10 d-none d-md-block" style={{ right: '-5%', bottom: '-20%', pointerEvents: 'none' }} viewBox="0 0 16 16"><path d="M8 1a2.5 2.5 0 0 1 2.5 2.5V4h-5v-.5A2.5 2.5 0 0 1 8 1zm3.5 3v-.5a3.5 3.5 0 1 0-7 0V4H1v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V4h-3.5zM2 5h12v9a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V5z"/></svg>
     </div>
   );
 }
