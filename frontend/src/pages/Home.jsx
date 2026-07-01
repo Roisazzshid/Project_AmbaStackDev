@@ -1,12 +1,13 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import Hero from "../components/Hero/Hero.jsx";
 import { getProducts } from "../utils/productApi";
 import http, { BASE_IMAGE_URL } from "../utils/http"; 
 import { useOutletContext, Link } from "react-router-dom";
+import { AuthContext } from '../context/AuthContext'; 
 
 function Home() {
   const { handleAddToCart } = useOutletContext() || {};
-  const [products, setProducts] = useState([]);
+  const { token } = React.useContext(AuthContext); // <-- Ambil token  const [products, setProducts] = useState([]);
   const [categories, setCategories] = useState([]); 
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -16,6 +17,15 @@ function Home() {
 
   const brandColor = '#03AC0E';
 
+  // Cek apakah Admin
+  let userRole = 'customer';
+  if (token) {
+    try {
+      const payload = JSON.parse(atob(token.split('.')[1]));
+      userRole = payload.role || 'customer';
+    } catch (e) {}
+  }
+  const isAdmin = userRole === 'admin';
   useEffect(() => {
     async function loadData() {
       try {
@@ -53,7 +63,6 @@ function Home() {
   return (
     <div className="container-fluid p-0 pb-5 mb-5 pb-md-0 mb-md-0 bg-light min-vh-100"> 
       
-      {/* PANGGIL HERO DAN OVER PROP PENCARIAN */}
       <div className="container px-3 px-md-4 pt-2">
         <Hero searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
       </div>
@@ -69,7 +78,6 @@ function Home() {
           <a href="#" className="text-brand fw-bold text-decoration-none small" style={{ color: brandColor }}>Lihat Semua</a>
         </div>
 
-        {/* SCROLLABLE KATEGORI FILTER */}
         <div className="d-flex overflow-auto pb-2 mb-4 hide-scrollbar gap-2">
           <button
             onClick={() => setActiveCategoryId("ALL")}
@@ -120,15 +128,14 @@ function Home() {
               return (
                 <div className="col-6 col-sm-6 col-md-4 col-lg-3 col-xl-2 d-flex" key={product.id}>
                   
-                  {/* UPGRADE PRODUCT CARD: hover-lift, shadow-hover */}
                   <div className="card w-100 border-0 shadow-sm rounded-4 overflow-hidden text-decoration-none product-card-hover" style={{ transition: 'all 0.3s ease' }}>
                     <style>{`
                       .product-card-hover:hover { transform: translateY(-5px); box-shadow: 0 12px 24px rgba(0,0,0,0.15) !important; }
                       .btn-add-cart { transition: all 0.2s ease; background-color: white; border: 1.5px solid ${brandColor}; color: ${brandColor}; }
                       .btn-add-cart:hover:not(:disabled) { background-color: ${brandColor}; color: white; transform: scale(1.02); }
+                      .btn-admin-mode { background-color: #cbd5e1; color: white; border: none; cursor: not-allowed; }
                     `}</style>
                     
-                    {/* GAMBAR PRODUK */}
                     <Link to={`/product/${product.id}`} className="text-decoration-none position-relative bg-white d-flex align-items-center justify-content-center p-3 border-bottom" style={{ aspectRatio: '1/1' }}>
                       {isOutOfStock && (
                         <div className="position-absolute top-0 start-0 w-100 h-100 bg-dark bg-opacity-50 d-flex align-items-center justify-content-center z-2">
@@ -138,7 +145,6 @@ function Home() {
                       <img src={formatImageUrl(product.image_url || product.image)} alt={product.name} className="img-fluid product-img-hover" style={{ maxHeight: '100%', objectFit: 'contain', transition: 'transform 0.3s ease' }} />
                     </Link>
 
-                    {/* DETAIL PRODUK */}
                     <div className="card-body p-3 d-flex flex-column bg-white">
                       <Link to={`/product/${product.id}`} className="text-decoration-none text-dark flex-grow-1">
                         <h6 className="fw-bold mb-2" style={{ fontSize: '0.90rem', display: '-webkit-box', WebkitLineClamp: '2', WebkitBoxOrient: 'vertical', overflow: 'hidden' }} title={product.name}>{product.name}</h6>
@@ -152,23 +158,23 @@ function Home() {
                         </div>
                       </Link>
 
-                      {/* UPGRADED TOMBOL KERANJANG (Lebih proper, solid, dan interaktif) */}
+                      {/* FIXED: JIKA ADMIN, TOMBOL MATI DAN TULISAN MODE ADMIN */}
                       <div className="mt-auto pt-2">
                         <button 
                           onClick={(e) => {
                             e.preventDefault();
-                            if(handleAddToCart && !isOutOfStock) handleAddToCart(product);
+                            if(handleAddToCart && !isOutOfStock && !isAdmin) handleAddToCart(product);
                           }} 
-                          disabled={isOutOfStock}
-                          className={`btn w-100 fw-bold rounded-pill py-2 shadow-sm d-flex align-items-center justify-content-center btn-add-cart ${isOutOfStock ? 'bg-light text-secondary border-secondary' : ''}`}
-                          style={{ fontSize: '0.85rem' }}
+                          disabled={isOutOfStock || isAdmin}
+                          className={`btn w-100 fw-bold rounded-pill py-2 shadow-sm d-flex align-items-center justify-content-center transition-all ${isAdmin ? 'bg-secondary text-white border-0' : (isOutOfStock ? 'bg-light text-secondary border-secondary' : 'btn-add-cart')}`}
+                          style={{ fontSize: '0.85rem', cursor: isAdmin ? 'not-allowed' : 'pointer' }}
                         >
-                          {isOutOfStock ? 'Stok Kosong' : (
+                          {isAdmin ? 'Mode Admin' : (isOutOfStock ? 'Stok Kosong' : (
                             <>
                               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="me-2" viewBox="0 0 16 16"><path d="M.5 1a.5.5 0 0 0 0 1h1.11l.401 1.607 1.498 7.985A.5.5 0 0 0 4 12h1a2 2 0 1 0 0 4 2 2 0 0 0 0-4h7a2 2 0 1 0 0 4 2 2 0 0 0 0-4h1a.5.5 0 0 0 .491-.408l1.5-8A.5.5 0 0 0 14.5 3H2.89l-.405-1.621A.5.5 0 0 0 2 1H.5zM6 14a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm7 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"/></svg>
                               + Keranjang
                             </>
-                          )}
+                          ))}
                         </button>
                       </div>
                     </div>

@@ -18,8 +18,7 @@ function Hero({ searchQuery, setSearchQuery }) {
   }, [images.length]);
 
   return (
-    <div className="glass-panel mb-4 mt-3 position-relative shadow-sm" style={{ borderRadius: '24px', overflow: 'hidden', background: 'linear-gradient(135deg, #0ce61f 0%, #03AC0E 100%)' }}>
-      <div className="container px-4 px-md-5">
+<div className="glass-panel mb-4 mt-3 position-relative shadow-sm" style={{ borderRadius: '24px', overflow: 'visible', background: 'linear-gradient(135deg, #0ce61f 0%, #03AC0E 100%)' }}>      <div className="container px-4 px-md-5">
         <div className="row d-flex align-items-center justify-content-between" style={{ minHeight: '380px' }}>
           
           {/* TEKS & KOLOM PENCARIAN (Pengganti Tombol Lama) */}
@@ -62,8 +61,7 @@ function Hero({ searchQuery, setSearchQuery }) {
                   zIndex: index === currentIndex ? 2 : 1
                 }}
               >
-                <img src={img} alt="Ambassador" className="img-fluid" style={{ maxHeight: '110%', filter: 'drop-shadow(0 20px 20px rgba(0,0,0,0.3))' }} />
-              </div>
+                <img src={img} alt="Ambassador" className="img-fluid" style={{ maxHeight: '125%', transform: 'translateY(-30px)', filter: 'drop-shadow(0 20px 20px rgba(0,0,0,0.4))' }} />              </div>
             ))}
           </div>
 
