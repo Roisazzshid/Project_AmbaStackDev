@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
+import { BASE_IMAGE_URL } from '../utils/http';
 
 function Cart() {
   const navigate = useNavigate();
@@ -51,10 +52,11 @@ function Cart() {
   const formatImageUrl = (imagePath) => {
     if (!imagePath) return 'https://via.placeholder.com/150?text=No+Image';
     if (imagePath.startsWith('http')) return imagePath;
-    if (imagePath.includes('/products/')) return imagePath.split('/uploads/').pop();
-    return `http://127.0.0.1:8000${imagePath}`;
+    if (imagePath.includes('/products/')) return imagePath.substring(imagePath.indexOf('/products/'));
+    if (imagePath.startsWith('/uploads/')) return `${BASE_IMAGE_URL}${imagePath}`;
+    return `${BASE_IMAGE_URL}/uploads/${imagePath}`;
   };
-
+  
   return (
     <div className="container mt-4 mb-5 min-vh-100">
       <h2 className="fw-black mb-4 text-dark d-flex align-items-center">
