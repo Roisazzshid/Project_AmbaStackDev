@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import http from '../utils/http';
+import http, { BASE_IMAGE_URL } from '../utils/http';
 
 function OrderHistory() {
   const navigate = useNavigate();
@@ -205,8 +205,14 @@ function OrderHistory() {
     return 'Menunggu Dikemas';
   };
 
-  const formatImageUrl = (img) => img ? (img.startsWith('http') || img.startsWith('/') ? img : `http://127.0.0.1:8000/uploads/${img}`) : 'https://via.placeholder.com/80';
-
+  const formatImageUrl = (img) => {
+    if (!img) return 'https://via.placeholder.com/80?text=No+Image';
+    if (img.startsWith('http')) return img;
+    if (img.includes('/products/')) return img.substring(img.indexOf('/products/')); 
+    if (img.startsWith('/uploads/')) return `${BASE_IMAGE_URL}${img}`;
+    return `${BASE_IMAGE_URL}/uploads/${img}`;
+  };
+  
   const generateOrderID = (id) => `AMBA${String(id).padStart(4, '0')}X`;
 
   const tabsWithCount = [

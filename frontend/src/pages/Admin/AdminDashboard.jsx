@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { getProducts, deleteProduct } from '../../utils/productApi';
 import AdminNavbar from '../../components/Navbar/AdminSidebar';
 import mascotAdmin from '../../assets/mascotadmin.png'; 
-import http from '../../utils/http';
+import http, { BASE_IMAGE_URL } from '../../utils/http';
 
 function AdminDashboard({ showToast }) {
   const [products, setProducts] = useState([]);
@@ -82,8 +82,8 @@ function AdminDashboard({ showToast }) {
     if (!img) return 'https://via.placeholder.com/55?text=No+Image';
     if (img.startsWith('http')) return img;
     if (img.includes('/products/')) return img.substring(img.indexOf('/products/')); 
-    if (img.startsWith('/uploads/')) return `http://127.0.0.1:8000${img}`;
-    return `http://127.0.0.1:8000/uploads/${img}`;
+    if (img.startsWith('/uploads/')) return `${BASE_IMAGE_URL}${img}`;
+    return `${BASE_IMAGE_URL}/uploads/${img}`;
   };
 
   return (

@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import http from '../utils/http';
+import http, { BASE_IMAGE_URL } from '../utils/http';
 import AdminSidebar from '../components/Navbar/AdminSidebar';
 
 function Chat() {
@@ -28,8 +28,8 @@ function Chat() {
     if (!img) return 'https://via.placeholder.com/50?text=No+Image';
     if (img.startsWith('http')) return img;
     if (img.includes('/products/')) return img.substring(img.indexOf('/products/')); 
-    if (img.startsWith('/uploads/')) return `http://127.0.0.1:8000${img}`;
-    return `http://127.0.0.1:8000/uploads/${img}`;
+    if (img.startsWith('/uploads/')) return `${BASE_IMAGE_URL}${img}`;
+    return `${BASE_IMAGE_URL}/uploads/${img}`;
   };
 
   const generateOrderID = (id, dateStr) => {
