@@ -3,6 +3,7 @@ import { useParams, useNavigate, Link, useOutletContext } from 'react-router-dom
 import { getProductById } from '../utils/productApi';
 import { AuthContext } from '../context/AuthContext'; 
 import AuthAlertModal from '../components/Modal/AuthAlertModal'; 
+import { BASE_IMAGE_URL } from '../utils/http'; // <--- TAMBAHAN BARU
 
 function ProductDetail() {
   const { id } = useParams();
@@ -47,18 +48,19 @@ function ProductDetail() {
   }, [id]);
 
   // LOGIKA GAMBAR CERDAS: Menggabungkan Dunia Frontend dan Backend!
+  
   const formatImageUrl = (imagePath) => {
     if (!imagePath) return 'https://via.placeholder.com/500?text=No+Image';
     // Jika gambar dari internet/URL luar
     if (imagePath.startsWith('http')) return imagePath;
     // Jika gambar dari Seeder (Frontend Public Folder)
     if (imagePath.startsWith('/products/')) return imagePath; 
-    // Jika gambar dari Upload Admin (Backend Uploads Folder)
-    if (imagePath.startsWith('/uploads/')) return `http://127.0.0.1:8000${imagePath}`;
-    // Fallback jika hanya nama file yang tersimpan
-    return `http://127.0.0.1:8000/uploads/${imagePath}`;
+    
+    // FIXED: Menggunakan BASE_IMAGE_URL agar mengarah ke Railway, bukan ke localhost (127.0.0.1)
+    if (imagePath.startsWith('/uploads/')) return `${BASE_IMAGE_URL}${imagePath}`;
+    return `${BASE_IMAGE_URL}/uploads/${imagePath}`;
   };
-
+  
   const decreaseQuantity = () => {
     if (quantity > 1 && !isAdmin) setQuantity(quantity - 1);
   };
