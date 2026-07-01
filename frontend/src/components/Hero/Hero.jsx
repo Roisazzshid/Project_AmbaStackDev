@@ -20,7 +20,7 @@ function Hero({ searchQuery, setSearchQuery }) {
   return (
     <div className="glass-panel mb-4 mt-4 position-relative shadow-sm" style={{ borderRadius: '24px', overflow: 'visible', background: 'linear-gradient(135deg, #03AC0E 0%, #06850E 100%)', color: 'white' }}>
       
-      {/* FIXED: Pembungkus KHUSUS Ornamen Tas Belanja agar terpotong rapi (Tidak bocor keluar card) */}
+      {/* Pembungkus KHUSUS Ornamen Tas Belanja agar terpotong rapi (Tidak bocor keluar card) */}
       <div className="position-absolute w-100 h-100" style={{ top: 0, left: 0, overflow: 'hidden', borderRadius: '24px', zIndex: 0 }}>
         <svg xmlns="http://www.w3.org/2000/svg" width="350" height="350" fill="white" className="position-absolute opacity-10 d-none d-md-block" style={{ right: '-5%', bottom: '-20%', pointerEvents: 'none' }} viewBox="0 0 16 16">
           <path d="M8 1a2.5 2.5 0 0 1 2.5 2.5V4h-5v-.5A2.5 2.5 0 0 1 8 1zm3.5 3v-.5a3.5 3.5 0 1 0-7 0V4H1v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V4h-3.5zM2 5h12v9a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V5z"/>
@@ -38,8 +38,8 @@ function Hero({ searchQuery, setSearchQuery }) {
               </span>
             </div>
             
-            {/* Teks Putih & Sangat Tebal (fw-black, font-weight 900) */}
-            <h1 className="display-5 mb-3 text-white text-shadow" style={{ fontWeight: '900', letterSpacing: '-0.5px', lineHeight: '1.2' }}>
+            {/* FIXED: Menggunakan fw-bolder (sama seperti logo di Navbar) tanpa inline style yang bikin teks meregang (stretch/kurus) */}
+            <h1 className="display-5 mb-3 text-white text-shadow fw-bolder" style={{ lineHeight: '1.3' }}>
               Belanja Puas,<br/>Harga Pas di AmbaCart!
             </h1>
             
