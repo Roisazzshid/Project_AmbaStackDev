@@ -18,14 +18,20 @@ function Hero({ searchQuery, setSearchQuery }) {
   }, [images.length]);
 
   return (
-<div className="glass-panel mb-4 mt-3 position-relative shadow-sm" style={{ borderRadius: '24px', overflow: 'visible', background: 'linear-gradient(135deg, #0ce61f 0%, #03AC0E 100%)' }}>      <div className="container px-4 px-md-5">
-        <div className="row d-flex align-items-center justify-content-between" style={{ minHeight: '380px' }}>
+    <div className="glass-panel mb-4 mt-4 position-relative shadow-sm" style={{ borderRadius: '24px', overflow: 'visible', background: 'linear-gradient(135deg, #0ce61f 0%, #03AC0E 100%)' }}>
+      <div className="container px-4 px-md-5">
+        
+        {/* FIXED: Diubah menjadi align-items-stretch agar Kolom Kanan mengambil tinggi full Card */}
+        <div className="row d-flex align-items-stretch justify-content-between" style={{ minHeight: '380px' }}>
           
-          {/* TEKS & KOLOM PENCARIAN (Pengganti Tombol Lama) */}
-          <div className="col-12 col-md-7 pt-4 pt-md-0 pb-4 pb-md-0 text-white text-center text-md-start z-2 order-2 order-md-1">
-            <span className="badge mb-3 px-3 py-2 rounded-pill fw-bold shadow-sm" style={{ color: brandColor, backgroundColor: '#ffffff' }}>
-              🚀 DISKON SPESIAL HARI INI
-            </span>
+          {/* TEKS & KOLOM PENCARIAN */}
+          {/* FIXED: Ditambahkan flex-column & justify-content-center agar teks tetap vertikal-tengah */}
+          <div className="col-12 col-md-7 d-flex flex-column justify-content-center pt-5 pt-md-0 pb-5 pb-md-0 text-white text-center text-md-start z-2 order-2 order-md-1">
+            <div className="mb-3">
+              <span className="badge px-3 py-2 rounded-pill fw-bold shadow-sm d-inline-block" style={{ color: brandColor, backgroundColor: '#ffffff' }}>
+                🚀 DISKON SPESIAL HARI INI
+              </span>
+            </div>
             <h1 className="fw-black display-5 mb-3 text-white text-shadow" style={{ letterSpacing: '-0.5px', lineHeight: '1.2' }}>
               Belanja Puas,<br/>Harga Pas di AmbaCart!
             </h1>
@@ -33,7 +39,6 @@ function Hero({ searchQuery, setSearchQuery }) {
               Temukan penawaran terbaik untuk berbagai macam kategori mulai dari gadget mutakhir, pakaian trendi, hingga perlengkapan rumah. Gratis Ongkir se-Indonesia!
             </p>
             
-            {/* SEARCH BAR (BUNGLON) */}
             <div className="position-relative w-100 shadow-sm rounded-pill overflow-hidden" style={{ maxWidth: '500px', margin: '0 auto', marginLeft: 'md-0' }}>
               <input 
                 type="text" 
@@ -50,24 +55,41 @@ function Hero({ searchQuery, setSearchQuery }) {
           </div>
 
           {/* SLIDER GAMBAR */}
-          <div className="col-12 col-md-5 text-center position-relative z-1 order-1 order-md-2 mb-3 mb-md-0" style={{ height: '280px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+          <div className="col-12 col-md-5 position-relative z-1 order-1 order-md-2" style={{ minHeight: '300px' }}>
             {images.map((img, index) => (
               <div 
                 key={index}
-                className={`position-absolute top-50 start-50 translate-middle w-100 h-100 d-flex align-items-center justify-content-center ${index === currentIndex ? 'active' : ''}`}
+                className={`position-absolute w-100 d-flex justify-content-center ${index === currentIndex ? 'active' : ''}`}
                 style={{
+                  bottom: '0',    // <--- FIXED: Mengunci/meratakan elemen tepat di garis bawah kotak
+                  left: '0',
+                  height: '115%', // <--- FIXED: Tinggi dilebihkan 15% agar kepala menembus batas atas
                   opacity: index === currentIndex ? 1 : 0,
                   transition: 'opacity 0.8s ease-in-out',
                   zIndex: index === currentIndex ? 2 : 1
                 }}
               >
-                <img src={img} alt="Ambassador" className="img-fluid" style={{ maxHeight: '125%', transform: 'translateY(-30px)', filter: 'drop-shadow(0 20px 20px rgba(0,0,0,0.4))' }} />              </div>
+                <img 
+                  src={img} 
+                  alt="Ambassador" 
+                  style={{ 
+                    height: '100%', 
+                    width: 'auto',
+                    maxWidth: '100%',
+                    objectFit: 'contain', 
+                    objectPosition: 'bottom', // <--- FIXED: Memastikan kaki nempel di lantai kotak
+                    filter: 'drop-shadow(0 20px 20px rgba(0,0,0,0.4))' 
+                  }} 
+                />
+              </div>
             ))}
           </div>
 
         </div>
       </div>
-      <svg xmlns="http://www.w3.org/2000/svg" width="350" height="350" fill="white" className="position-absolute opacity-10 d-none d-md-block" style={{ right: '-5%', bottom: '-20%' }} viewBox="0 0 16 16"><path d="M8 1a2.5 2.5 0 0 1 2.5 2.5V4h-5v-.5A2.5 2.5 0 0 1 8 1zm3.5 3v-.5a3.5 3.5 0 1 0-7 0V4H1v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V4h-3.5zM2 5h12v9a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V5z"/></svg>
+      
+      {/* Background SVG Ornamen */}
+      <svg xmlns="http://www.w3.org/2000/svg" width="350" height="350" fill="white" className="position-absolute opacity-10 d-none d-md-block" style={{ right: '-5%', bottom: '-20%', pointerEvents: 'none' }} viewBox="0 0 16 16"><path d="M8 1a2.5 2.5 0 0 1 2.5 2.5V4h-5v-.5A2.5 2.5 0 0 1 8 1zm3.5 3v-.5a3.5 3.5 0 1 0-7 0V4H1v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V4h-3.5zM2 5h12v9a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V5z"/></svg>
     </div>
   );
 }
